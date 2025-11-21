@@ -8,5 +8,16 @@ namespace Lyserra.PlayerAndAttributes
         public Cat(string petName, short petWeight, byte petAge) : base(petName, petWeight, petAge)
         {
         }
+
+        public override string showDisplay()
+        {
+            string line = new string('=', 40);
+            string message = "Awesome! you get a cat";
+            Console.WriteLine(line);
+            Console.WriteLine(message.PadLeft((40 + message.Length) / 2));
+            Console.WriteLine(line);
+
+            return message;
+        }
     }
 }

@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Lyserra.Game.Program
 {
-    internal class Program
+    public class Program
     {
+        public static void Main(string[] args)
+        {
+            GameLoop gameLoop = new GameLoop();
+
+            gameLoop.startGame();
+        }
     }
 }

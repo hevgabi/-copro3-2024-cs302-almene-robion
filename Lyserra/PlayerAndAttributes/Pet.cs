@@ -2,7 +2,7 @@
 
 namespace Lyserra.PlayerAndAttributes
 {
-    public class Pet
+    public abstract class Pet
     {
 
         private string petName;
@@ -20,7 +20,19 @@ namespace Lyserra.PlayerAndAttributes
         public short PetWeight { get { return petWeight; } set { petWeight = value; } }
         public byte PetAge { get { return petAge; } set { petAge = value; } }
 
-        
+        public string Name { get; set; }
+        public string Breed { get; set; }
+        public string HairColor { get; set; }
+        public string HairCut { get; set; }
+        public string EyeType { get; set; }
+        public string EyeColor { get; set; }
+        public string SpecialEye { get; set; }
+        public string Accessory { get; set; }
+        public string Personality { get; set; }
+        public string Scent { get; set; }
+        public string Mutation { get; set; }
+
+        public abstract string showDisplay();
 
 
     }
