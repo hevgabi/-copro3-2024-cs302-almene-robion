@@ -9,9 +9,14 @@ namespace Lyserra.PlayerAndAttributes
         private short petWeight;
         private byte petAge;
 
-        public Pet(string petName, short petWeight, byte petAge)
+        public Pet(string petName)
         {
             this.petName = petName;
+            
+        }
+
+        public Pet(short petWeight, byte petAge)
+        {
             this.petWeight = petWeight;
             this.petAge = petAge;
         }
