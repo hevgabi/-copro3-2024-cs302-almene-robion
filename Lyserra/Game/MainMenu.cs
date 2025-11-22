@@ -8,7 +8,7 @@ namespace Lyserra.Game
     {
         public ConsoleHelper consoleHelper = new ConsoleHelper();
         Owner owner;
-        
+
         public void displayMainMenu()
         {
             for (byte i = 0; i < 3; i++)
@@ -82,7 +82,7 @@ namespace Lyserra.Game
                         break;
 
                     case '3':
-                        
+
                         break;
 
                     case '4':
