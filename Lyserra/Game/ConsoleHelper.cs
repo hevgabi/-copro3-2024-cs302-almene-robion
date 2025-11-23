@@ -52,7 +52,7 @@ namespace Lyserra.Game
             Console.WriteLine("Press Enter to return to the Main Menu...".PadLeft((40 + 39) / 2));
             Console.ReadLine();
         }
-
+        // Method to get user input with validation [empty or whitespace check]
         public string getInput(string prompt)
         {
             string input;
@@ -73,6 +73,7 @@ namespace Lyserra.Game
             return input;
         }
 
+        // Method to get player's name [need regex validation later]
         public string getName(string prompt)
         {
             string name;
@@ -84,6 +85,7 @@ namespace Lyserra.Game
            
         }
 
+        // Method to show a message for a certain duration
         public void showMessage(string message, int delay = 2000)
         {
             string line = new string('=', 40);
@@ -94,6 +96,7 @@ namespace Lyserra.Game
             Console.Clear();
         }
 
+        // Method to display a menu and get the user's choice [with input validation (e.g. empty, whitespace, index out of range)]
         public char getMenuChoice(string title, string[] options, short startIndex = 0)
         {
             string input;
@@ -124,6 +127,7 @@ namespace Lyserra.Game
             return input[0];
         }
 
+        // Method to display text slowly, character by character
         public void slowWriteLine(string text, int charDelayMs = 12)
         {
             if (string.IsNullOrEmpty(text))
@@ -141,6 +145,7 @@ namespace Lyserra.Game
             }
             Console.WriteLine();
         }
+        // Method to safely pick an option from an array based on user input
         public string safePick(string[] arr, char choiceChar)
         {
             if (arr == null || arr.Length == 0) return string.Empty;
@@ -165,7 +170,7 @@ namespace Lyserra.Game
             }
         }
 
-
+        // Method to combine menu display and safe pick
         public string pickType(string title, string[] option)
         {
             char choice = getMenuChoice(title, option);

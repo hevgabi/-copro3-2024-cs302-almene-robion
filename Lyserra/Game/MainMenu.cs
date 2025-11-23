@@ -81,14 +81,12 @@ namespace Lyserra.Game
             owner = new Owner(consoleHelper.getName("Enter Owner's Name: "));
             Console.Clear();
 
-
-
-
             string ownerType = consoleHelper.pickType("Select Owner Type", attributes.ownerTypes.ToArray());
 
             string[] petTypes = { "Dog", "Cat" };
             string petType = consoleHelper.pickType("Select Pet Type", petTypes);
 
+            // Create pet object based on selected type
             if (petType.Equals("Dog"))
             {
                 dog = new Dog(consoleHelper.getName("Enter Pet's Name: "));//stored in dog object
@@ -101,7 +99,8 @@ namespace Lyserra.Game
                 Console.Clear();
             }
 
-            List<string> breedList = attributes.GetBreed(petType);
+            // Gather pet attributes
+            List<string> breedList = attributes.GetBreed(petType); 
             string breed = consoleHelper.pickType("Select Pet Breed", breedList.ToArray());
             string hairColor = consoleHelper.pickType("Select Hair Color", attributes.hairColor.ToArray());
             string hairCut = consoleHelper.pickType("Select Pet Cut", attributes.hairCut.ToArray());
@@ -115,13 +114,31 @@ namespace Lyserra.Game
             string healthPart = consoleHelper.pickType("Select Specific Health Issue", attributes.healthStatusMainMenu.ToArray()); // to be fixed
             string petName = petType == "Dog" ? dog.Name : cat.Name;
 
+            // Assign attributes to the pet object
             if (petType == "Dog")
             {
-                dog.showDisplay();
+                dog.Breed = breed;
+                dog.HairColor = hairColor;
+                dog.HairCut = hairCut;
+                dog.ColorDesign = colorType;
+                dog.EyeColor = eyeColor;
+                dog.Accessory = accessory;
+                dog.Personality = personality;
+                dog.Scent = scent;
+                dog.Mutation = mutation;
             }
             else
             {
-                cat.showDisplay();
+                cat.Breed = breed;
+                cat.HairColor = hairColor;
+                cat.HairCut = hairCut;
+                cat.ColorDesign = colorType;
+                cat.EyeColor = eyeColor;
+                cat.Accessory = accessory;
+                cat.Personality = personality;
+                cat.Scent = scent;
+                cat.Mutation = mutation;
+
             }
 
         }
