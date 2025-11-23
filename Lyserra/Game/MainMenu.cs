@@ -126,13 +126,6 @@ namespace Lyserra.Game
 
         }
 
-        private string SafePick(string[] arr, int idx)
-        {
-            if (arr == null || arr.Length == 0) return string.Empty;
-            if (idx < 0) idx = 0;
-            if (idx >= arr.Length) idx = arr.Length - 1;
-            return arr[idx];
-        }
 
         
     }
