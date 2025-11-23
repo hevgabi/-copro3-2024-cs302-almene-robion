@@ -5,11 +5,11 @@ namespace Lyserra.PlayerAndAttributes
 {
     public class Cat : Pet
     {
-        public Cat(string petName, short petWeight, byte petAge) : base(petName)
+        public Cat(string petName) : base(petName)
         {
         }
 
-        public Cat(short petWeight, byte petAge) : base(petWeight, petAge)
+        public Cat(string weight, string age) : base(weight, age)
         {
         }
 

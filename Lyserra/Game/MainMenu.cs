@@ -9,13 +9,15 @@ namespace Lyserra.Game
     {
         //nag commit na ako pre
         public ConsoleHelper consoleHelper = new ConsoleHelper();
-        Owner owner;
         private Attributes attributes = new Attributes();
+        Owner owner;
         private Dog dog;
         private Cat cat;
 
         public void displayMainMenu()
         {
+            string[] mainMenuOptions = { "Create New Pet", "Load Pet", "View Pet Status", "Campaign", "Credits", "Exit" };
+
             for (byte i = 0; i < 3; i++)
             {
                 Console.Clear();
@@ -28,32 +30,10 @@ namespace Lyserra.Game
             bool gameMenuActive = true;
             while (gameMenuActive)
             {
-                string choice;
-                char option;
-                do
-                {
-                    Console.Clear();
-                    string title = "MAIN MENU";
-                    string line = new string('=', 40);
-                    Console.Write(line +
-                        "\n" + title.PadLeft((30 + title.Length) / 2) +
-                        "\n==============================" +
-                        "\n [0] Create New Pet" +
-                        "\n [1] Load Pet" +
-                        "\n [2] View Pet Status" +
-                        "\n [3] Campaign" +
-                        "\n [4] Credits" +
-                        "\n [5] Exit" +
-                        "\n" + line + "\n");
-                    choice = consoleHelper.getInput("Select Option: ");
-                    option = choice[0];
-                } while (choice.Equals("empty"));
-
+                char option = consoleHelper.getMenuChoice("MAIN MENU", mainMenuOptions);
                 switch (option)
                 {
                     case '0':
-
-
                         StartPetCustomizationFlow();
                         break;
 
@@ -98,118 +78,52 @@ namespace Lyserra.Game
         private void StartPetCustomizationFlow()
         {
             Console.Clear();
-
-
             owner = new Owner(consoleHelper.getName("Enter Owner's Name: "));
             Console.Clear();
 
-            string[] ownerTypes = new string[]
-                {
-                "Tita with over decorated bags",
-                "Rich kid",
-                "College student na payat",
-                "Gym bro",
-                "Sigma lolo",
-                "Delulu na couple",
-                "Swerteng kumag"
-                };
 
-            char ownerTypeChoice = consoleHelper.getMenuChoice("Select Owner Type", ownerTypes);
-            int ownerTypeIndex = Char.IsDigit(ownerTypeChoice) ? ownerTypeChoice - '0' : 0;
-            string ownerType = SafePick(ownerTypes, ownerTypeIndex);
 
-            string[] petTypes = new string[] { "Dog", "Cat" };
-            char petTypeChoice = consoleHelper.getMenuChoice("Select Pet Type", petTypes);
-            int petTypeIndex = Char.IsDigit(petTypeChoice) ? petTypeChoice - '0' : 0;
-            string petType = SafePick(petTypes, petTypeIndex);
 
-            if (petType.Equals('0'))
+            string ownerType = consoleHelper.pickType("Select Owner Type", attributes.ownerTypes.ToArray());
+
+            string[] petTypes = { "Dog", "Cat" };
+            string petType = consoleHelper.pickType("Select Pet Type", petTypes);
+
+            if (petType.Equals("Dog"))
             {
-                dog = new Dog(consoleHelper.getName("Enter Pet's Name: "));
-                consoleHelper.showMessage($"Let's create your pet '{dog.PetName}'!");
+                dog = new Dog(consoleHelper.getName("Enter Pet's Name: "));//stored in dog object
+                consoleHelper.showMessage($"Let's create your pet '{dog.Name}'!");
+                Console.Clear();
+            } else
+            {
+                cat = new Cat(consoleHelper.getName("Enter Pet's Name: "));//stored in cat object
+                consoleHelper.showMessage($"Let's create your pet '{cat.Name}'!");
                 Console.Clear();
             }
 
             List<string> breedList = attributes.GetBreed(petType);
-            char breedChoice = consoleHelper.getMenuChoice("Select Pet Breed", breedList.ToArray());
-            int breedIndex = Char.IsDigit(breedChoice) ? breedChoice - '0' : 0;
-            string breed = SafePick(breedList.ToArray(), breedIndex);
+            string breed = consoleHelper.pickType("Select Pet Breed", breedList.ToArray());
+            string hairColor = consoleHelper.pickType("Select Hair Color", attributes.hairColor.ToArray());
+            string hairCut = consoleHelper.pickType("Select Pet Cut", attributes.hairCut.ToArray());
+            string colorType = consoleHelper.pickType("Select Pet Color Type", attributes.colorEType.ToArray());
+            string eyeColor = consoleHelper.pickType("Select Eye Color", attributes.colorEye.ToArray());
+            string accessory = consoleHelper.pickType("Select Accessory", attributes.accessory.ToArray());
+            string personality = consoleHelper.pickType("Select Personality", attributes.personality.ToArray());  
+            string scent = consoleHelper.pickType("Select Scent", attributes.scent.ToArray());
+            string mutation = consoleHelper.pickType("Select Mutation", attributes.mutation.ToArray());
+            string healthMain = consoleHelper.pickType("Select Health Status", attributes.healthStatusMainMenu.ToArray()); // to be fixed
+            string healthPart = consoleHelper.pickType("Select Specific Health Issue", attributes.healthStatusMainMenu.ToArray()); // to be fixed
+            string petName = petType == "Dog" ? dog.Name : cat.Name;
 
-            char hairColorChoice = consoleHelper.getMenuChoice("Select Hair Color", attributes.hairColor.ToArray());
-            int hairColorIndex = Char.IsDigit(hairColorChoice) ? hairColorChoice - '0' : 0;
-            string hairColor = SafePick(attributes.hairColor.ToArray(), hairColorIndex);
-
-            short weight = PromptForShort("Enter Pet Weight (kg): ");
-            byte age = PromptForByte("Enter Pet Age (years): ");
-
-            char hairCutChoice = consoleHelper.getMenuChoice("Select Pet Cut", attributes.hairCut.ToArray());
-            int hairCutIndex = Char.IsDigit(hairCutChoice) ? hairCutChoice - '0' : 0;
-            string hairCut = SafePick(attributes.hairCut.ToArray(), hairCutIndex);
-
-            char colorTypeChoice = consoleHelper.getMenuChoice("Select Pet Color Type", attributes.colorEType.ToArray());
-            int colorTypeIndex = Char.IsDigit(colorTypeChoice) ? colorTypeChoice - '0' : 0;
-            string colorType = SafePick(attributes.colorEType.ToArray(), colorTypeIndex);
-
-            char eyeColorChoice = consoleHelper.getMenuChoice("Select Eye Color", attributes.colorEye.ToArray());
-            int eyeColorIndex = Char.IsDigit(eyeColorChoice) ? eyeColorChoice - '0' : 0;
-            string eyeColor = SafePick(attributes.colorEye.ToArray(), eyeColorIndex);
-
-            string[] yesNo = new string[] { "No", "Yes" };
-            char specialAsk = consoleHelper.getMenuChoice("Add Special Eye? ", yesNo);
-            int specialAskIndex = Char.IsDigit(specialAsk) ? specialAsk - '0' : 0;
-            string specialEye = "None";
-            if (SafePick(yesNo, specialAskIndex) == "Yes")
+            if (petType == "Dog")
             {
-                char specialChoice = consoleHelper.getMenuChoice("Select Special Eye", attributes.specialEye.ToArray());
-                int specialIndex = Char.IsDigit(specialChoice) ? specialChoice - '0' : 0;
-                specialEye = SafePick(attributes.specialEye.ToArray(), specialIndex);
+                dog.showDisplay();
+            }
+            else
+            {
+                cat.showDisplay();
             }
 
-            char accessoryChoice = consoleHelper.getMenuChoice("Select Accessory", attributes.accessory.ToArray());
-            int accessoryIndex = Char.IsDigit(accessoryChoice) ? accessoryChoice - '0' : 0;
-            string accessory = SafePick(attributes.accessory.ToArray(), accessoryIndex);
-
-            char personalityChoice = consoleHelper.getMenuChoice("Select Personality", attributes.personality.ToArray());
-            int personalityIndex = Char.IsDigit(personalityChoice) ? personalityChoice - '0' : 0;
-            string personality = SafePick(attributes.personality.ToArray(), personalityIndex);
-
-            char scentChoice = consoleHelper.getMenuChoice("Select Scent / Shampoo", attributes.scent.ToArray());
-            int scentIndex = Char.IsDigit(scentChoice) ? scentChoice - '0' : 0;
-            string scent = SafePick(attributes.scent.ToArray(), scentIndex);
-
-            char mutationChoice = consoleHelper.getMenuChoice("Select Mutation", attributes.mutation.ToArray());
-            int mutationIndex = Char.IsDigit(mutationChoice) ? mutationChoice - '0' : 0;
-            string mutation = SafePick(attributes.mutation.ToArray(), mutationIndex);
-
-            char healthMainChoice = consoleHelper.getMenuChoice("Health Menu", attributes.healthStatusMainMenu.ToArray());
-            int healthMainIndex = Char.IsDigit(healthMainChoice) ? healthMainChoice - '0' : 0;
-            string healthMain = SafePick(attributes.healthStatusMainMenu.ToArray(), healthMainIndex);
-
-            char healthPartChoice = consoleHelper.getMenuChoice("Select Body Section", attributes.healthStatusMenu.ToArray());
-            int healthPartIndex = Char.IsDigit(healthPartChoice) ? healthPartChoice - '0' : 0;
-            string healthPart = SafePick(attributes.healthStatusMenu.ToArray(), healthPartIndex);
-
-            //string summary = BuildSummary(owner.returnName(), ownerType, petName, petType, breed, hairColor, weight, age,
-            //    hairCut, colorType, eyeColor, specialEye, accessory, personality, scent, mutation, healthMain, healthPart);
-
-            //if (petType == "Dog")
-            //{
-            //    Dog dog = new Dog(petName);
-            //    dog.showDisplay();
-            //}
-            //else
-            //{
-            //    Cat cat = new Cat(petName, weight, age);
-            //    cat.showDisplay();
-            //}
-
-            //Console.WriteLine("\n" + new string('=', 40));
-            //Console.WriteLine("PET SUMMARY".PadLeft((40 + "PET SUMMARY".Length) / 2));
-            //Console.WriteLine(new string('=', 40));
-            //Console.WriteLine(summary);
-            //Console.WriteLine("\nPress Enter to return to main menu...");
-            //Console.ReadLine();
-            //Console.Clear();
         }
 
         private string SafePick(string[] arr, int idx)
@@ -220,49 +134,6 @@ namespace Lyserra.Game
             return arr[idx];
         }
 
-        private short PromptForShort(string prompt)
-        {
-            short value;
-            string input;
-            do
-            {
-                Console.Write(prompt);
-                input = Console.ReadLine();
-            } while (!short.TryParse(input, out value) || value < 0);
-            return value;
-        }
-
-        private byte PromptForByte(string prompt)
-        {
-            byte value;
-            string input;
-            do
-            {
-                Console.Write(prompt);
-                input = Console.ReadLine();
-            } while (!byte.TryParse(input, out value));
-            return value;
-        }
-
-        private static string BuildSummary(string ownerName, string ownerType, string petName, string petType, string breed,
-            string hairColor, short weight, byte age, string hairCut, string colorType, string eyeColor, string specialEye,
-            string accessory, string personality, string scent, string mutation, string healthMain, string healthPart)
-        {
-            return
-                $"Owner: {ownerName} ({ownerType})\n" +
-                $"Pet Name: {petName}\n" +
-                $"Type: {petType}\n" +
-                $"Breed: {breed}\n" +
-                $"Hair Color: {hairColor}\n" +
-                $"Weight: {weight} kg, Age: {age} yrs\n" +
-                $"Cut: {hairCut}\n" +
-                $"Color Type: {colorType}\n" +
-                $"Eye Color: {eyeColor} (Special: {specialEye})\n" +
-                $"Accessory: {accessory}\n" +
-                $"Personality: {personality}\n" +
-                $"Scent: {scent}\n" +
-                $"Mutation: {mutation}\n" +
-                $"Health Menu: {healthMain} -> {healthPart}";
-        }
+        
     }
 }

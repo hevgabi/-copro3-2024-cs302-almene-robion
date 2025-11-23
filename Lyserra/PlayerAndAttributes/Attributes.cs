@@ -3,9 +3,13 @@ using System.Text;
 
 
 namespace Lyserra.PlayerAndAttributes
-{z
+{
     public class Attributes
     {
+        public List<string> ownerTypes = new List<string>()
+        {
+                "Tita with over decorated bags", "Rich kid", "College student na payat", "Gym bro", "Sigma lolo", "Delulu na couple", "Swerteng kumag"
+        };
         public List<string> GetBreed(string petType)
         {
             return petType == "Dog" ? dogBreed : catBreed;
@@ -42,10 +46,7 @@ namespace Lyserra.PlayerAndAttributes
             "Red", "Blue", "Black", "Brown", "Violet", "Yellow", "Green"
         };
 
-        public List<string> specialEye = new List<string>()
-        {
-            "Rinnegan", "Sharingan", "Byakugan", "Six Eye [Gojo]", "Shinigami"
-        };
+
 
         public List<string> accessory = new List<string>()
         {

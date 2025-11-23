@@ -7,7 +7,7 @@ namespace Lyserra.PlayerAndAttributes
         public Dog(string petName) : base(petName)
         {
         }
-        public Dog(short petWeight, byte petAge) : base(petWeight, petAge)
+        public Dog(string petWeight, string petAge) : base(petWeight, petAge)
         {
         }
 

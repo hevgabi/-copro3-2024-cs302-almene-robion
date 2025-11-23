@@ -5,37 +5,54 @@ namespace Lyserra.PlayerAndAttributes
     public abstract class Pet
     {
 
-        private string petName;
-        private short petWeight;
-        private byte petAge;
+        private string name;
+        private string weight;
+        private string age;
+        private string breed;
+        private string hairColor;
+        private string colorDesign;
+        private string hairCut;
+        private string eyeColor;
+        private string accessory;
+        private string personality;
+        private string scent;
+        private string mutation;
+        // special traits here
+        private string element;
+        private string crystal;
+        private string evolution;
+
+
+
+
 
         public Pet(string petName)
         {
-            this.petName = petName;
+            this.name = petName;
             
         }
 
-        public Pet(short petWeight, byte petAge)
+        public Pet(string weight, string age)
         {
-            this.petWeight = petWeight;
-            this.petAge = petAge;
+            this.weight = weight;
+            this.age = age;
         }
 
-        public string PetName { get { return petName; } set { petName = value; } }
-        public short PetWeight { get { return petWeight; } set { petWeight = value; } }
-        public byte PetAge { get { return petAge; } set { petAge = value; } }
-
-        public string Name { get; set; }
-        public string Breed { get; set; }
-        public string HairColor { get; set; }
-        public string HairCut { get; set; }
-        public string EyeType { get; set; }
-        public string EyeColor { get; set; }
-        public string SpecialEye { get; set; }
-        public string Accessory { get; set; }
-        public string Personality { get; set; }
-        public string Scent { get; set; }
-        public string Mutation { get; set; }
+        public string Name { get { return name; } set { Name = value; } }
+        public string Weight { get { return weight; } set { weight = value; } }
+        public string Age { get { return age; } set { age = value; } }
+        public string Breed { get { return breed; } set { breed = value; } }
+        public string HairColor { get { return hairColor; } set { hairColor = value; } }
+        public string ColorDesign { get { return colorDesign; } set { colorDesign = value; } }  
+        public string HairCut { get { return hairCut; } set { hairCut = value; } }
+        public string EyeColor { get { return eyeColor; } set { eyeColor = value; } }
+        public string Accessory { get { return accessory; } set { accessory = value; } }
+        public string Personality { get { return personality; } set { personality = value; } }
+        public string Scent { get { return scent; } set { scent = value; } }
+        public string Mutation { get { return mutation; } set { mutation = value; } }
+        public string Element { get { return element; } set { element = value; } }
+        public string Crystal { get { return crystal; } set { crystal = value; } }
+        public string Evolution { get { return evolution; } set { evolution = value; } }
 
         public abstract string showDisplay();
 

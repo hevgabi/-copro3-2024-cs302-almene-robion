@@ -2,6 +2,8 @@
 using System;
 using System.Threading;
 
+
+
 namespace Lyserra.Game
 {
     public class ConsoleHelper
@@ -42,7 +44,7 @@ namespace Lyserra.Game
 
             foreach (string lineText in story)
             {
-                SlowWriteLine(lineText);
+                slowWriteLine(lineText);
                 Thread.Sleep(350); 
             }
 
@@ -74,7 +76,6 @@ namespace Lyserra.Game
         public string getName(string prompt)
         {
             string name;
-            bool nameIsNotValid = true;
 
                 name = getInput(prompt);
                 return name;
@@ -95,21 +96,35 @@ namespace Lyserra.Game
 
         public char getMenuChoice(string title, string[] options, short startIndex = 0)
         {
-            Console.Clear();
-            string line = new string('=', 40);
-            Console.WriteLine(line);
-            Console.WriteLine(title.PadLeft((40 + title.Length) / 2));
-            Console.WriteLine(line);
+            string input;
+            do
+            {
+                Console.Clear();
+                string line = new string('=', 40);
+                Console.WriteLine(line);
+                Console.WriteLine(title.PadLeft((40 + title.Length) / 2));
+                Console.WriteLine(line);
 
-            for (int i = 0; i < options.Length; i++)
-                Console.WriteLine($"[{i + startIndex}] {options[i]}");
+                for (int i = 0; i < options.Length; i++)
+                    Console.WriteLine($"[{i + startIndex}] {options[i]}");
 
-            Console.WriteLine(line);
-            string input = getInput("Select Option: ");
+                Console.WriteLine(line);
+                
+                Console.WriteLine(line);
+                Console.Write("=== " + "Select Option: ");
+
+                input = Console.ReadLine();
+                if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+                {
+                    Console.Clear();
+                    showMessage("Input cannot be empty. Please try again.");
+                    Thread.Sleep(700);
+                }
+            } while (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
             return input[0];
         }
 
-        private void SlowWriteLine(string text, int charDelayMs = 12)
+        public void slowWriteLine(string text, int charDelayMs = 12)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -125,6 +140,36 @@ namespace Lyserra.Game
                 Thread.Sleep(charDelayMs);
             }
             Console.WriteLine();
+        }
+        public string safePick(string[] arr, char choiceChar)
+        {
+            if (arr == null || arr.Length == 0) return string.Empty;
+
+            int index;
+            while (true)
+            {
+                if (Char.IsDigit(choiceChar))
+                {
+                    index = choiceChar - '0';
+                    if (index >= 0 && index < arr.Length)
+                    {
+                        return arr[index];
+                    }
+                }
+
+                // Invalid choice, show error and ask again
+                showMessage($"Invalid choice. Please select a number between 0 and {arr.Length - 1}.");
+
+                // Ulitin ang menu at kunin ulit ang input
+                choiceChar = getMenuChoice("Select Option", arr);
+            }
+        }
+
+
+        public string pickType(string title, string[] option)
+        {
+            char choice = getMenuChoice(title, option);
+            return safePick(option, choice);
         }
     }
 }

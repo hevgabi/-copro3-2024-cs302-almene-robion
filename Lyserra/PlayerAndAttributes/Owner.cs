@@ -6,6 +6,8 @@ namespace Lyserra.PlayerAndAttributes
     public class Owner
     {
         private string ownerName;
+        private string specialTrait;
+        
 
         public Owner(string ownerName)
         {
@@ -13,6 +15,7 @@ namespace Lyserra.PlayerAndAttributes
         }
 
         public string OwnerName { get { return ownerName; } set { ownerName = value; } }
+        public string SpecialTrait { get { return specialTrait; } set { specialTrait = value; } }
 
         public string returnName()
         {
