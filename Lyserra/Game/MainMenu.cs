@@ -11,6 +11,8 @@ namespace Lyserra.Game
         public ConsoleHelper consoleHelper = new ConsoleHelper();
         Owner owner;
         private Attributes attributes = new Attributes();
+        private Dog dog;
+        private Cat cat;
 
         public void displayMainMenu()
         {
@@ -30,8 +32,10 @@ namespace Lyserra.Game
                 char option;
                 do
                 {
+                    Console.Clear();
                     string title = "MAIN MENU";
-                    Console.Write("==============================" +
+                    string line = new string('=', 40);
+                    Console.Write(line +
                         "\n" + title.PadLeft((30 + title.Length) / 2) +
                         "\n==============================" +
                         "\n [0] Create New Pet" +
@@ -40,29 +44,17 @@ namespace Lyserra.Game
                         "\n [3] Campaign" +
                         "\n [4] Credits" +
                         "\n [5] Exit" +
-                        "\n==============================\n");
-                     choice = consoleHelper.getInput("Select Option: ");
-                     option = choice[0];
+                        "\n" + line + "\n");
+                    choice = consoleHelper.getInput("Select Option: ");
+                    option = choice[0];
                 } while (choice.Equals("empty"));
 
                 switch (option)
                 {
                     case '0':
-                        Console.Clear();
 
-                        owner = new Owner(consoleHelper.getInput("Enter Owner's Name: "));
-                        Console.Clear();
 
-                        consoleHelper.showMessage($"Welcome, {owner.returnName()}!");
-                        Console.Clear();
-
-                        string petName = consoleHelper.getInput("Enter Pet's Name: ");
-                        Console.Clear();
-
-                        consoleHelper.showMessage($"Let's create your pet '{petName}'!");
-                        Console.Clear();
-
-                        StartPetCustomizationFlow(owner, petName);
+                        StartPetCustomizationFlow();
                         break;
 
                     case '1':
@@ -103,10 +95,16 @@ namespace Lyserra.Game
             }
         }
 
-        private void StartPetCustomizationFlow(Owner owner, string petName)
+        private void StartPetCustomizationFlow()
         {
+            Console.Clear();
+
+
+            owner = new Owner(consoleHelper.getName("Enter Owner's Name: "));
+            Console.Clear();
+
             string[] ownerTypes = new string[]
-            {
+                {
                 "Tita with over decorated bags",
                 "Rich kid",
                 "College student na payat",
@@ -114,7 +112,8 @@ namespace Lyserra.Game
                 "Sigma lolo",
                 "Delulu na couple",
                 "Swerteng kumag"
-            };
+                };
+
             char ownerTypeChoice = consoleHelper.getMenuChoice("Select Owner Type", ownerTypes);
             int ownerTypeIndex = Char.IsDigit(ownerTypeChoice) ? ownerTypeChoice - '0' : 0;
             string ownerType = SafePick(ownerTypes, ownerTypeIndex);
@@ -123,6 +122,13 @@ namespace Lyserra.Game
             char petTypeChoice = consoleHelper.getMenuChoice("Select Pet Type", petTypes);
             int petTypeIndex = Char.IsDigit(petTypeChoice) ? petTypeChoice - '0' : 0;
             string petType = SafePick(petTypes, petTypeIndex);
+
+            if (petType.Equals('0'))
+            {
+                dog = new Dog(consoleHelper.getName("Enter Pet's Name: "));
+                consoleHelper.showMessage($"Let's create your pet '{dog.PetName}'!");
+                Console.Clear();
+            }
 
             List<string> breedList = attributes.GetBreed(petType);
             char breedChoice = consoleHelper.getMenuChoice("Select Pet Breed", breedList.ToArray());
@@ -183,30 +189,30 @@ namespace Lyserra.Game
             int healthPartIndex = Char.IsDigit(healthPartChoice) ? healthPartChoice - '0' : 0;
             string healthPart = SafePick(attributes.healthStatusMenu.ToArray(), healthPartIndex);
 
-            string summary = BuildSummary(owner.returnName(), ownerType, petName, petType, breed, hairColor, weight, age,
-                hairCut, colorType, eyeColor, specialEye, accessory, personality, scent, mutation, healthMain, healthPart);
+            //string summary = BuildSummary(owner.returnName(), ownerType, petName, petType, breed, hairColor, weight, age,
+            //    hairCut, colorType, eyeColor, specialEye, accessory, personality, scent, mutation, healthMain, healthPart);
 
-            if (petType == "Dog")
-            {
-                Dog dog = new Dog(petName);
-                dog.showDisplay();
-            }
-            else
-            {
-                Cat cat = new Cat(petName, weight, age);
-                cat.showDisplay();
-            }
+            //if (petType == "Dog")
+            //{
+            //    Dog dog = new Dog(petName);
+            //    dog.showDisplay();
+            //}
+            //else
+            //{
+            //    Cat cat = new Cat(petName, weight, age);
+            //    cat.showDisplay();
+            //}
 
-            Console.WriteLine("\n" + new string('=', 40));
-            Console.WriteLine("PET SUMMARY".PadLeft((40 + "PET SUMMARY".Length) / 2));
-            Console.WriteLine(new string('=', 40));
-            Console.WriteLine(summary);
-            Console.WriteLine("\nPress Enter to return to main menu...");
-            Console.ReadLine();
-            Console.Clear();
+            //Console.WriteLine("\n" + new string('=', 40));
+            //Console.WriteLine("PET SUMMARY".PadLeft((40 + "PET SUMMARY".Length) / 2));
+            //Console.WriteLine(new string('=', 40));
+            //Console.WriteLine(summary);
+            //Console.WriteLine("\nPress Enter to return to main menu...");
+            //Console.ReadLine();
+            //Console.Clear();
         }
 
-        private static string SafePick(string[] arr, int idx)
+        private string SafePick(string[] arr, int idx)
         {
             if (arr == null || arr.Length == 0) return string.Empty;
             if (idx < 0) idx = 0;
@@ -214,7 +220,7 @@ namespace Lyserra.Game
             return arr[idx];
         }
 
-        private static short PromptForShort(string prompt)
+        private short PromptForShort(string prompt)
         {
             short value;
             string input;
@@ -226,7 +232,7 @@ namespace Lyserra.Game
             return value;
         }
 
-        private static byte PromptForByte(string prompt)
+        private byte PromptForByte(string prompt)
         {
             byte value;
             string input;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lyserra.PlayerAndAttributes;
+using System;
 using System.Threading;
 
 namespace Lyserra.Game
@@ -55,20 +56,34 @@ namespace Lyserra.Game
             string input;
             do
             {
-                Console.Write(prompt);
+                string line = new string('=', 40);
+                Console.WriteLine(line);
+                Console.Write("=== " + prompt);
+
                 input = Console.ReadLine();
-                if (string.IsNullOrEmpty(input))
+                if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
                 {
-                    Console.WriteLine("Input cannot be empty. Please try again.");
-                    input = "empty";
-                    Thread.Sleep(1500);
-                    return input;
+                    Console.Clear();
+                    showMessage("Input cannot be empty. Please try again.");
+                    Thread.Sleep(700);
                 }
-            } while (string.IsNullOrEmpty(input));
+            } while (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input));
             return input;
         }
 
-        public void showMessage(string message, int delay = 4000)
+        public string getName(string prompt)
+        {
+            string name;
+            bool nameIsNotValid = true;
+
+                name = getInput(prompt);
+                return name;
+
+
+           
+        }
+
+        public void showMessage(string message, int delay = 2000)
         {
             string line = new string('=', 40);
             Console.WriteLine(line);
