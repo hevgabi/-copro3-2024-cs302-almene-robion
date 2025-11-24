@@ -7,7 +7,6 @@ namespace Lyserra.Game
 {
     public class MainMenu
     {
-        //nag commit na ako pre
         public ConsoleHelper consoleHelper = new ConsoleHelper();
         private Attributes attributes = new Attributes();
         Owner owner;
@@ -50,7 +49,9 @@ namespace Lyserra.Game
                         break;
 
                     case '3':
-
+                        // Fixed: Call showCampaign method inayos ko na pre pag nag space yung user mag s-skip yung story then print it all
+                        consoleHelper.showCampaign();
+                        Console.Clear();
                         break;
 
                     case '4':
@@ -71,79 +72,90 @@ namespace Lyserra.Game
                     case '5':
                         gameMenuActive = false;
                         break;
+
+                    default:
+                        Console.Clear();
+                        consoleHelper.showMessage("Invalid option. Please try again.", 1500);
+                        break;
                 }
             }
         }
 
         private void StartPetCustomizationFlow()
         {
-            Console.Clear();
-            owner = new Owner(consoleHelper.getName("Enter Owner's Name: "));
-            Console.Clear();
-
-            string ownerType = consoleHelper.pickType("Select Owner Type", attributes.ownerTypes.ToArray());
-
-            string[] petTypes = { "Dog", "Cat" };
-            string petType = consoleHelper.pickType("Select Pet Type", petTypes);
-
-            // Create pet object based on selected type
-            if (petType.Equals("Dog"))
+            try
             {
-                dog = new Dog(consoleHelper.getName("Enter Pet's Name: "));//stored in dog object
-                consoleHelper.showMessage($"Let's create your pet '{dog.Name}'!");
                 Console.Clear();
-            } else
-            {
-                cat = new Cat(consoleHelper.getName("Enter Pet's Name: "));//stored in cat object
-                consoleHelper.showMessage($"Let's create your pet '{cat.Name}'!");
+                owner = new Owner(consoleHelper.getName("Enter Owner's Name: "));
                 Console.Clear();
+
+                string ownerType = consoleHelper.pickType("Select Owner Type", attributes.ownerTypes.ToArray());
+
+                string[] petTypes = { "Dog", "Cat" };
+                string petType = consoleHelper.pickType("Select Pet Type", petTypes);
+
+                // Create pet object based on selected type
+                if (petType.Equals("Dog"))
+                {
+                    dog = new Dog(consoleHelper.getName("Enter Pet's Name: "));
+                    consoleHelper.showMessage($"Let's create your pet '{dog.Name}'!");
+                    Console.Clear();
+                }
+                else
+                {
+                    cat = new Cat(consoleHelper.getName("Enter Pet's Name: "));
+                    consoleHelper.showMessage($"Let's create your pet '{cat.Name}'!");
+                    Console.Clear();
+                }
+
+                // Gather pet attributes
+                List<string> breedList = attributes.GetBreed(petType);
+                string breed = consoleHelper.pickType("Select Pet Breed", breedList.ToArray());
+                string hairColor = consoleHelper.pickType("Select Hair Color", attributes.hairColor.ToArray());
+                string hairCut = consoleHelper.pickType("Select Pet Cut", attributes.hairCut.ToArray());
+                string colorType = consoleHelper.pickType("Select Pet Color Type", attributes.colorEType.ToArray());
+                string eyeColor = consoleHelper.pickType("Select Eye Color", attributes.colorEye.ToArray());
+                string accessory = consoleHelper.pickType("Select Accessory", attributes.accessory.ToArray());
+                string personality = consoleHelper.pickType("Select Personality", attributes.personality.ToArray());
+                string scent = consoleHelper.pickType("Select Scent", attributes.scent.ToArray());
+                string mutation = consoleHelper.pickType("Select Mutation", attributes.mutation.ToArray());
+                string healthMain = consoleHelper.pickType("Select Health Status", attributes.healthStatusMainMenu.ToArray());
+                string healthPart = consoleHelper.pickType("Select Specific Health Issue", attributes.healthStatusMainMenu.ToArray());
+                string petName = petType == "Dog" ? dog.Name : cat.Name;
+
+                // Assign attributes to the pet object
+                if (petType == "Dog")
+                {
+                    dog.Breed = breed;
+                    dog.HairColor = hairColor;
+                    dog.HairCut = hairCut;
+                    dog.ColorDesign = colorType;
+                    dog.EyeColor = eyeColor;
+                    dog.Accessory = accessory;
+                    dog.Personality = personality;
+                    dog.Scent = scent;
+                    dog.Mutation = mutation;
+                }
+                else
+                {
+                    cat.Breed = breed;
+                    cat.HairColor = hairColor;
+                    cat.HairCut = hairCut;
+                    cat.ColorDesign = colorType;
+                    cat.EyeColor = eyeColor;
+                    cat.Accessory = accessory;
+                    cat.Personality = personality;
+                    cat.Scent = scent;
+                    cat.Mutation = mutation;
+                }
+
+                consoleHelper.showMessage($"{petName} has been created successfully!", 2000);
             }
-
-            // Gather pet attributes
-            List<string> breedList = attributes.GetBreed(petType); 
-            string breed = consoleHelper.pickType("Select Pet Breed", breedList.ToArray());
-            string hairColor = consoleHelper.pickType("Select Hair Color", attributes.hairColor.ToArray());
-            string hairCut = consoleHelper.pickType("Select Pet Cut", attributes.hairCut.ToArray());
-            string colorType = consoleHelper.pickType("Select Pet Color Type", attributes.colorEType.ToArray());
-            string eyeColor = consoleHelper.pickType("Select Eye Color", attributes.colorEye.ToArray());
-            string accessory = consoleHelper.pickType("Select Accessory", attributes.accessory.ToArray());
-            string personality = consoleHelper.pickType("Select Personality", attributes.personality.ToArray());  
-            string scent = consoleHelper.pickType("Select Scent", attributes.scent.ToArray());
-            string mutation = consoleHelper.pickType("Select Mutation", attributes.mutation.ToArray());
-            string healthMain = consoleHelper.pickType("Select Health Status", attributes.healthStatusMainMenu.ToArray()); // to be fixed
-            string healthPart = consoleHelper.pickType("Select Specific Health Issue", attributes.healthStatusMainMenu.ToArray()); // to be fixed
-            string petName = petType == "Dog" ? dog.Name : cat.Name;
-
-            // Assign attributes to the pet object
-            if (petType == "Dog")
+            catch (Exception ex)
             {
-                dog.Breed = breed;
-                dog.HairColor = hairColor;
-                dog.HairCut = hairCut;
-                dog.ColorDesign = colorType;
-                dog.EyeColor = eyeColor;
-                dog.Accessory = accessory;
-                dog.Personality = personality;
-                dog.Scent = scent;
-                dog.Mutation = mutation;
+                Console.Clear();
+                consoleHelper.showMessage($"Error during pet creation: {ex.Message}", 3000);
             }
-            else
-            {
-                cat.Breed = breed;
-                cat.HairColor = hairColor;
-                cat.HairCut = hairCut;
-                cat.ColorDesign = colorType;
-                cat.EyeColor = eyeColor;
-                cat.Accessory = accessory;
-                cat.Personality = personality;
-                cat.Scent = scent;
-                cat.Mutation = mutation;
-
-            }
-
         }
-
-
-        
     }
 }
