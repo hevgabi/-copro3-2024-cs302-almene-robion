@@ -25,7 +25,7 @@ namespace Lyserra.Game
                 {
                     case "1":
                         Console.Clear();
-                        
+                        LyserraDB.initialize();
                         mainMenu.displayMainMenu();
                         break;
                     case "2":

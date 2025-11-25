@@ -33,6 +33,7 @@ namespace Lyserra.Game
                 switch (option)
                 {
                     case '0':
+
                         StartPetCustomizationFlow();
                         break;
 

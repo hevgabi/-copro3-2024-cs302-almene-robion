@@ -5,13 +5,25 @@ using System.Text.RegularExpressions;
 
 namespace Lyserra.Game
 {
-    private struct variables
+    public struct SetVariables
     {
-        string input;
-        string 
+        private string input;
+        private string line;
+        private int num;
+        private char choice;
+        private string message;
+
+
+        public string Input { get { return input; } set { input = value; } }
+        public string Line { get { return line; } set { line = value; } }
+        public int Num { get { return num; } set { num = value; } }
+        public char Choice { get { return choice; } set { choice = value; } }
+        public string Message { get { return message; } set { message = value; } }
+
     }
     public class ConsoleHelper : IInputValidator
     {
+        SetVariables vars = new SetVariables();
         // regex pattern : letters with spaces, 2-20 chars lang to
         private readonly Regex namePattern = new Regex(@"^[a-zA-Z\s]{2,20}$");
         private bool skipStory = false;
@@ -128,6 +140,7 @@ namespace Lyserra.Game
         public string getInput(string prompt)
         {
             string input;
+            
             do
             {
                 try

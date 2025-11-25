@@ -19,7 +19,7 @@ namespace Lyserra.PlayerAndAttributes
         public string MasterName { get { return masterName; } set { masterName = value; } }
         public int MasterID { get { return masterID; } set { masterID = value; } } 
         public string SpecialTrait { get { return specialTrait; } set { specialTrait = value; } }
-        public string MasterType { get { return masterType: } set { masterType = value; } }
+        public string MasterType { get { return masterType; } set { masterType = value; } }
 
         public string returnName()
         {

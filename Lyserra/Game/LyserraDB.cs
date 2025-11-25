@@ -6,7 +6,7 @@ namespace Lyserra.Game
 {
     public static class LyserraDB
     {
-        private static string connectionString = "Data Source=C:\\Users\\almen\\OneDrive\\Desktop\\Database\\Lyserra.db";
+        private static string connectionString = "Data Source=Lyserra.db";
         
         public static void initialize()
         {
@@ -74,7 +74,6 @@ namespace Lyserra.Game
                             VALUES (@masterID, @petName, @weight, @age, @breed, @hairColor, @colorDesign, @hairCut, @eyeColor, @accessory, @personality, @scent, @mutation, @element, @crystal, @evolution)";
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@masterID", master.MasterID);
                     cmd.Parameters.AddWithValue("@petName", pet.Name);
                 }
             }
