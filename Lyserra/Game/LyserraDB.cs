@@ -74,6 +74,7 @@ namespace Lyserra.Game
                             VALUES (@masterID, @petName, @weight, @age, @breed, @hairColor, @colorDesign, @hairCut, @eyeColor, @accessory, @personality, @scent, @mutation, @element, @crystal, @evolution)";
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
+
                     cmd.Parameters.AddWithValue("@petName", pet.Name);
                 }
             }
