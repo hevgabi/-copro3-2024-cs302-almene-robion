@@ -99,7 +99,7 @@ namespace Lyserra.Game
                 master.MasterType = consoleHelper.pickType("Select Master Type", attributes.ownerTypes.ToArray());
 
                 master.SpecialTrait = consoleHelper.pickType("Select Special Trait", attributes.specialTraits.ToArray());
-                
+
 
                 string[] petTypes = { "Dog", "Cat" };
                 string petType = consoleHelper.pickType("Select Pet Type", petTypes);
@@ -137,7 +137,9 @@ namespace Lyserra.Game
                 // new: Element selection
                 string element = consoleHelper.pickType("Select Element", attributes.elements.ToArray());
                 string healthMain = consoleHelper.pickType("Select Health Status", attributes.healthStatusMenu.ToArray());
-                
+                string[] stats = attributes.stats.ToArray();
+                consoleHelper.setStat(stats);
+
                 
 
 

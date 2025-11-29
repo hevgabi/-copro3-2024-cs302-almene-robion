@@ -15,6 +15,7 @@ namespace Lyserra.PlayerAndAttributes
         {
             "Strength", "Mana", "Defense", "Speed"
         };
+        
 
         public List<string> specialTraits = new List<string> 
         { 

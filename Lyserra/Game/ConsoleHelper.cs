@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using System.Text.RegularExpressions;
+using SQLitePCL;
 
 namespace Lyserra.Game
 {
@@ -360,6 +361,60 @@ namespace Lyserra.Game
             return safePick(option, choice);
         }
 
+        public List<byte> setStat(string[] attr)
+        {
+            byte statValue = 100;
+            List<byte> value = new List<byte>(new byte[attr.Length]);
+
+            int index = 0;
+
+            while (statValue > 0)
+            {
+                Console.Clear();
+                displayVars.Title = "Stats";
+
+                Console.WriteLine(displayVars.Line);
+                Console.WriteLine(displayVars.CenterText(displayVars.Title));
+                Console.WriteLine(displayVars.Line);
+
+                // Show all current stats
+                for (int i = 0; i < attr.Length; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] {attr[i]}: {value[i]}");
+                }
+
+                Console.WriteLine(displayVars.Line);
+
+                string attribute = attr[index];
+                string raw = getInput($"{attribute} value (Remaining {statValue}): ");
+
+                if (!byte.TryParse(raw, out byte input))
+                {
+                    showMessage("Invalid input. Enter a number.");
+                    continue;
+                }
+
+                if (input > statValue)
+                {
+                    showMessage("Stat exceeds remaining points.");
+                    continue;
+                }
+
+                // Add to existing value
+                value[index] += input;
+                statValue -= input;
+
+                // Move to next attribute
+                index = (index + 1) % attr.Length;
+            }
+
+            showMessage("All stat points allocated.");
+
+            return value;
+        }
+
+
+
         //private Master loadExistingMaster()
         //{
         //    List<Master> savedMasters = 
@@ -381,5 +436,5 @@ namespace Lyserra.Game
 
         //    }
         //}
-    }   
+    }
 }
