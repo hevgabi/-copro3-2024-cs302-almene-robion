@@ -324,9 +324,9 @@ namespace Lyserra.Game
                           $"Scent: {chosenPet.Scent}\n" +
                           $"Mutation: {chosenPet.Mutation}\n" +
                           $"Element: {chosenPet.Element}\n" +
-                          $"Crystal: {chosenPet.Crystal}" +
-                          $"Evolution: {chosenPet.Evolution}" +
-                          $"================= Stats  =================\n" +
+                          $"Crystal: {chosenPet.Crystal}\n" +
+                          $"Evolution: {chosenPet.Evolution}\n" +
+                          $"================= Stats  ===============\n" +
                           $"STR: {chosenPet.Strength}\n" +
                           $"MANA: {chosenPet.Mana}\n" +
                           $"DEF: {chosenPet.Defense}\n" +
