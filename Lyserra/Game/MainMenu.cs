@@ -9,14 +9,21 @@ namespace Lyserra.Game
     {
         public ConsoleHelper consoleHelper = new ConsoleHelper();
         private Attributes attributes = new Attributes();
+        LyserraDB database = new LyserraDB("C:\\Users\\almen\\OneDrive\\Desktop\\Database\\Lyserra.DB");
         Master master;
-        private Dog dog;
-        private Cat cat;
+        Dog dog;
+        Cat cat;
+        private void assignPetToGlobal(Pet pet)
+        {
+            if (pet.Type == "Dog")
+                this.dog = (Dog)pet;
+            else if (pet.Type == "Cat")
+                this.cat = (Cat)pet;
+        }
 
         public void displayMainMenu()
         {
-            string[] mainMenuOptions = { "Create New Pet", "Load Pet", "View Pet Status", "Campaign", "Credits", "Exit" };
-
+            // Start game animation
             for (byte i = 0; i < 3; i++)
             {
                 Console.Clear();
@@ -26,179 +33,314 @@ namespace Lyserra.Game
                 Thread.Sleep(500);
             }
 
+            while (master == null)
+            {
+                masterMenu();
+            }
+
+            string[] mainMenuOptions = { "Create New Pet", "Delete Pet", "Load Pet", "View Pet Status", "Campaign", "Credits", "Exit" };
             bool gameMenuActive = true;
+
             while (gameMenuActive)
             {
+
                 char option = consoleHelper.getMenuChoice("MAIN MENU", mainMenuOptions);
+
                 switch (option)
                 {
-                    case '0':
-                        StartPetCustomizationFlow();
+                    case '0': // Create Pet
+                        StartPetCustomizationFlow(master);
                         break;
 
-                    case '1':
-                        Console.Clear();
-                        consoleHelper.showMessage("Load Pet feature is not yet implemented.", 2000);
-                        Console.Clear();
+                    case '1': // Delete Pet
+                        deletePetFlow();
                         break;
 
-                    case '2':
-                        Console.Clear();
+                    case '2': // Load Pet
+                        choosePetFlow(master.MasterID); // automatic handle kung isa lang o maraming pets
+                        if (dog != null)
+                            consoleHelper.showMessage($"Loaded {dog.Name} the Dog!", 1500);
+                        else if (cat != null)
+                            consoleHelper.showMessage($"Loaded {cat.Name} the Cat!", 1500);     
+                        break;
+
+                    case '3': // View Pet Status
                         consoleHelper.showMessage("View Pet Status feature is not yet implemented.", 2000);
-                        Console.Clear();
                         break;
 
-                    case '3':
+                    case '4': // Campaign
                         consoleHelper.showCampaign();
-                        Console.Clear();
                         break;
 
-                    case '4':
-                        Console.Clear();
-                        string line = new string('=', 40);
-                        Console.WriteLine(line);
-                        Console.WriteLine("CREDITS".PadLeft((40 + "CREDITS".Length) / 2));
-                        Console.WriteLine(line);
-                        Console.WriteLine("Programmers/Directors:".PadLeft((40 + 23) / 2));
-                        Console.WriteLine("Fritz Gabriel M. Almene".PadLeft((40 + 24) / 2));
-                        Console.WriteLine("Jhon Clifford Robion".PadLeft((40 + 21) / 2));
-                        Console.WriteLine(line);
-                        Console.WriteLine("Press Enter to return...".PadLeft((40 + 23) / 2));
-                        Console.ReadLine();
-                        Console.Clear();
+                    case '5': // Credits
+                        showCredits();
                         break;
 
-                    case '5':
+                    case '6': // Exit
                         gameMenuActive = false;
-                        Console.Clear();
-                        string exitLine = new string('=', 40);
-                        Console.WriteLine(exitLine);
-                        Console.WriteLine("Thank you for playing Lyserra!".PadLeft((40 + 30) / 2));
-                        Console.WriteLine("Goodbye!".PadLeft((40 + 8) / 2));
-                        Console.WriteLine(exitLine);
-                        Thread.Sleep(2000);
-                        break;
+                        masterMenu();
 
-                    default:
-                        Console.Clear();
-                        consoleHelper.showMessage("Invalid option. Please try again.", 1500);
                         break;
                 }
             }
         }
 
-        private void StartPetCustomizationFlow()
+        private void masterMenu()
+        {
+            bool masterMenuActive = true;
+            while (masterMenuActive)
+            {
+                string[] options = { "Create Master", "Choose Master", "Delete Master", "Back" };
+                string choice = consoleHelper.pickType("Master Menu", options);
+
+                switch (choice)
+                {
+                    case "Create Master":
+                        createMasterFlow();
+                        masterMenuActive = false;
+                        break;
+
+                    case "Choose Master":
+                        chooseMasterFlow();
+                        masterMenuActive = false;
+                        break;
+
+                    case "Delete Master":
+                        deleteMasterFlow();
+                        break;
+
+                    case "Back":
+                        masterMenuActive = false;
+                        break;
+                }
+
+            }
+        }
+
+        private void createMasterFlow()
+        {
+            Console.Clear();
+            string masterName = consoleHelper.getName("Enter Master's Name: ");
+            string type = consoleHelper.pickType("Select Master Type", attributes.ownerTypes.ToArray());
+            string trait = consoleHelper.pickType("Select Special Trait", attributes.specialTraits.ToArray());
+
+            Master newMaster = new Master(masterName)
+            {
+                MasterType = type,
+                SpecialTrait = trait
+            };
+
+            long masterId = database.insertMaster(newMaster);
+            newMaster.MasterID = masterId;
+
+            master = newMaster;
+
+            consoleHelper.showMessage($"Master {masterName} created!", 1500);
+        }
+
+        private void chooseMasterFlow()
+        {
+            Console.Clear();
+
+            List<Master> list = database.getAllMasters();
+
+            if (list.Count == 0)
+            {
+                consoleHelper.showMessage("No master found.", 1000);
+                return;
+            }
+
+            string[] names = new string[list.Count];
+            for (int i = 0; i < list.Count; i++)
+                names[i] = $"{list[i].MasterID}: {list[i].MasterName}";
+
+            // Show choices
+            string picked = consoleHelper.pickType("Choose Master", names);
+
+            long masterID = long.Parse(picked.Split(':')[0]);
+
+            Master chosenMaster = database.getMasterById(masterID);
+
+            // DIRETSO MAIN MENU
+            this.master = chosenMaster;
+        }
+
+
+
+        private void deleteMasterFlow()
+        {
+            Console.Clear();
+            string search = consoleHelper.getName("Search master to delete: ");
+            List<Master> list = database.searchMasters(search);
+
+            if (list.Count == 0)
+            {
+                consoleHelper.showMessage("No master found.", 1000);
+                return;
+            }
+
+            string[] names = new string[list.Count];
+            for (int i = 0; i < list.Count; i++)
+                names[i] = $"{list[i].MasterID}: {list[i].MasterName}";
+
+            string picked = consoleHelper.pickType("Delete Master", names);
+            long masterId = long.Parse(picked.Split(':')[0]);
+
+            database.deletePetsByMasterId(masterId); // delete all pets first
+            database.deleteMaster(masterId);          // then delete master
+
+            consoleHelper.showMessage("Master and all their pets have been deleted.", 2000);
+
+            if (master != null && master.MasterID == masterId)
+                master = null;
+        }
+
+
+
+        private void StartPetCustomizationFlow(Master master)
         {
             try
             {
                 Console.Clear();
-                LyserraDB.initialize();
-                master = new Master(consoleHelper.getName("Enter Master's Name: "));
-                Console.Clear();
 
-                master.MasterType = consoleHelper.pickType("Select Master Type", attributes.ownerTypes.ToArray());
-
-                master.SpecialTrait = consoleHelper.pickType("Select Special Trait", attributes.specialTraits.ToArray());
-
-
+                // Select pet type and name
                 string[] petTypes = { "Dog", "Cat" };
                 string petType = consoleHelper.pickType("Select Pet Type", petTypes);
+                string petName = consoleHelper.getName("Enter Pet's Name: ");
+                consoleHelper.showMessage($"Let's create your pet '{petName}'!");
+                Console.Clear();
 
-                // Create pet object based on selected type
-                if (petType.Equals("Dog"))
-                {
-                    dog = new Dog(consoleHelper.getName("Enter Pet's Name: "));
-                    consoleHelper.showMessage($"Let's create your pet '{dog.Name}'!");
-                    Console.Clear();
-                }
-                else
-                {
-                    cat = new Cat(consoleHelper.getName("Enter Pet's Name: "));
-                    consoleHelper.showMessage($"Let's create your pet '{cat.Name}'!");
-                    Console.Clear();
-                }
+                // Create pet object
+                Pet pet = petType == "Dog" ? new Dog(petName) : new Cat(petName);
+                pet.MasterID = master.MasterID;
 
-                // Gather pet attributes
-                List<string> breedList = attributes.GetBreed(petType);
-                string breed = consoleHelper.pickType("Select Pet Breed", breedList.ToArray());
-                string weight = consoleHelper.pickType("Select Pet Weight", attributes.weightCategories.ToArray());
-                string ageWithDesc = consoleHelper.pickType("Select Pet Age", attributes.ageCategories.ToArray());
-                string age = attributes.GetAgeValue(ageWithDesc); //get actual age value
-                string hairColor = consoleHelper.pickType("Select Hair Color", attributes.hairColor.ToArray());
-                string hairCut = consoleHelper.pickType("Select Pet Cut", attributes.hairCut.ToArray());
-                string colorType = consoleHelper.pickType("Select Pet Color Type", attributes.colorEType.ToArray());
-                string eyeColor = consoleHelper.pickType("Select Eye Color", attributes.colorEye.ToArray());
-                string accessory = consoleHelper.pickType("Select Accessory", attributes.accessory.ToArray());
-                string personality = consoleHelper.pickType("Select Personality", attributes.personality.ToArray());
-                string scent = consoleHelper.pickType("Select Scent", attributes.scent.ToArray());
-                string mutation = consoleHelper.pickType("Select Mutation", attributes.mutation.ToArray());
-                string element = consoleHelper.pickType("Select Element", attributes.elements.ToArray());
-                string healthMain = consoleHelper.pickType("Select Health Status", attributes.healthStatusMenu.ToArray());
-                string[] statsNames = attributes.stats.ToArray();
-                List<byte> stats = consoleHelper.setStat(statsNames);
+                // Assign attributes
+                AssignPetAttributes(pet, petType);
 
-                string petName = petType == "Dog" ? dog.Name : cat.Name;
+                // Save to DB
+                long petId = database.insertPet(pet);
+                pet.PetID = petId;
 
-
-                // assign attributes to pet object
-                if (petType == "Dog")
-                {
-                    dog.Type = "Dog";
-                    dog.MasterID = master.MasterID;
-                    dog.Weight = weight;
-                    dog.Age = age;
-                    dog.Breed = breed;
-                    dog.HairColor = hairColor;
-                    dog.HairCut = hairCut;
-                    dog.ColorDesign = colorType;
-                    dog.EyeColor = eyeColor;
-                    dog.Accessory = accessory;
-                    dog.Personality = personality;
-                    dog.Scent = scent;
-                    dog.Mutation = mutation;
-                    dog.Element = element;
-                    dog.Strength = stats[0];
-                    dog.Mana = stats[1];
-                    dog.Defense = stats[2];
-                    dog.Speed = stats[3];
-                }
-                else
-                {
-                    cat.Type = "Cat";
-                    cat.MasterID = master.MasterID;
-                    cat.Weight = weight;
-                    cat.Age = age;
-                    cat.Breed = breed;
-                    cat.HairColor = hairColor;
-                    cat.HairCut = hairCut;
-                    cat.ColorDesign = colorType;
-                    cat.EyeColor = eyeColor;
-                    cat.Accessory = accessory;
-                    cat.Personality = personality;
-                    cat.Scent = scent;
-                    cat.Mutation = mutation;
-                    cat.Element = element;
-                    cat.Strength = stats[0];
-                    cat.Mana = stats[1];
-                    cat.Defense = stats[2];
-                    cat.Speed = stats[3];
-                }
-
-                // save to db
-                LyserraDB.insertMaster(master);
-
-                if (petType == "Dog")
-                    LyserraDB.insertPet(dog);
-                else
-                    LyserraDB.insertPet(cat);
-
-                consoleHelper.showMessage($"{petName} has been created successfully!", 2000);
+                consoleHelper.showMessage($"{pet.Name} has been created successfully!", 2000);
             }
             catch (Exception ex)
             {
-                Console.Clear();
                 consoleHelper.showMessage($"Error during pet creation: {ex.Message}", 3000);
             }
+        }
+
+        private void AssignPetAttributes(Pet pet, string petType)
+        {
+            pet.Type = petType;
+            pet.Weight = consoleHelper.pickType("Select Pet Weight", attributes.weightCategories.ToArray());
+            string ageWithDesc = consoleHelper.pickType("Select Pet Age", attributes.ageCategories.ToArray());
+            pet.Age = attributes.GetAgeValue(ageWithDesc);
+            pet.Breed = consoleHelper.pickType("Select Pet Breed", attributes.GetBreed(petType).ToArray());
+            pet.HairColor = consoleHelper.pickType("Select Hair Color", attributes.hairColor.ToArray());
+            pet.HairCut = consoleHelper.pickType("Select Pet Cut", attributes.hairCut.ToArray());
+            pet.ColorDesign = consoleHelper.pickType("Select Pet Color Type", attributes.colorEType.ToArray());
+            pet.EyeColor = consoleHelper.pickType("Select Eye Color", attributes.colorEye.ToArray());
+            pet.Accessory = consoleHelper.pickType("Select Accessory", attributes.accessory.ToArray());
+            pet.Personality = consoleHelper.pickType("Select Personality", attributes.personality.ToArray());
+            pet.Scent = consoleHelper.pickType("Select Scent", attributes.scent.ToArray());
+            pet.Mutation = consoleHelper.pickType("Select Mutation", attributes.mutation.ToArray());
+            pet.Element = consoleHelper.pickType("Select Element", attributes.elements.ToArray());
+
+            // Stats
+            string[] statsNames = attributes.stats.ToArray();
+            List<byte> stats = consoleHelper.setStat(statsNames);
+            pet.Strength = stats[0];
+            pet.Mana = stats[1];
+            pet.Defense = stats[2];
+            pet.Speed = stats[3];
+        }
+
+        private void deletePetFlow()
+        {
+            Console.Clear();
+            List<Pet> pets = database.getPetsByMasterId(master.MasterID);
+
+            if (pets.Count == 0)
+            {
+                consoleHelper.showMessage("No pets to delete.", 1000);
+                return;
+            }
+
+            string[] names = new string[pets.Count];
+            for (int i = 0; i < pets.Count; i++)
+                names[i] = $"{pets[i].PetID}: {pets[i].Name}";
+
+            string picked = consoleHelper.pickType("Delete Pet", names);
+            long petId = long.Parse(picked.Split(':')[0]);
+
+            database.deletePet(petId);
+            consoleHelper.showMessage("Pet has been deleted.", 1500);
+        }
+
+        private void choosePetFlow(long masterId)
+        {
+            Console.Clear();
+
+            List<Pet> pets = database.getPetsByMasterId(masterId);
+
+            if (pets.Count == 0)
+            {
+                consoleHelper.showMessage("This master has no pets yet."); // hintay sa Enter
+                return;
+            }
+
+            Pet chosenPet;
+
+            if (pets.Count == 1)
+            {
+                chosenPet = pets[0];
+            }
+            else
+            {
+                string[] names = new string[pets.Count];
+                for (int i = 0; i < pets.Count; i++)
+                    names[i] = $"{pets[i].PetID}: {pets[i].Name} ({pets[i].Type})";
+
+                string picked = consoleHelper.pickType("Choose Pet", names);
+                long petId = long.Parse(picked.Split(':')[0]);
+                chosenPet = database.getPetById(petId);
+            }
+
+            // Assign globally to dog or cat
+            assignPetToGlobal(chosenPet);
+
+            // Display all attributes
+            string info = $"{chosenPet.Name} ({chosenPet.Type})\n" +
+                          $"Breed: {chosenPet.Breed}\n" +
+                          $"Age: {chosenPet.Age}\n" +
+                          $"Weight: {chosenPet.Weight}\n" +
+                          $"Hair: {chosenPet.HairColor} {chosenPet.HairCut}\n" +
+                          $"Eye Color: {chosenPet.EyeColor}\n" +
+                          $"Accessory: {chosenPet.Accessory}\n" +
+                          $"Personality: {chosenPet.Personality}\n" +
+                          $"Scent: {chosenPet.Scent}\n" +
+                          $"Mutation: {chosenPet.Mutation}\n" +
+                          $"Element: {chosenPet.Element}\n" +
+                          $"Stats - STR: {chosenPet.Strength}, MANA: {chosenPet.Mana}, DEF: {chosenPet.Defense}, SPD: {chosenPet.Speed}";
+
+            consoleHelper.showMessage(info, 20000); // hintay sa Enter
+        }
+
+
+
+        private void showCredits()
+        {
+            Console.Clear();
+            string line = new string('=', 40);
+            Console.WriteLine(line);
+            Console.WriteLine("CREDITS".PadLeft((40 + "CREDITS".Length) / 2));
+            Console.WriteLine(line);
+            Console.WriteLine("Programmers/Directors:".PadLeft((40 + 23) / 2));
+            Console.WriteLine("Fritz Gabriel M. Almene".PadLeft((40 + 24) / 2));
+            Console.WriteLine("Jhon Clifford Robion".PadLeft((40 + 21) / 2));
+            Console.WriteLine(line);
+            Console.WriteLine("Press Enter to return...".PadLeft((40 + 23) / 2));
+            Console.ReadLine();
         }
     }
 }

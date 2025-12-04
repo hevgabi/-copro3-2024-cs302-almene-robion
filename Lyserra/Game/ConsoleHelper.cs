@@ -165,36 +165,31 @@ namespace Lyserra.Game
         {
             string input;
 
-            do
+            try
             {
-                try
-                {
-                    Console.WriteLine(displayVars.Line);
-                    Console.Write("=== " + prompt);
+                Console.WriteLine(displayVars.Line);
+                Console.Write("=== " + prompt);
 
-                    input = Console.ReadLine();
-                    input = SanitizeInput(input);
+                input = Console.ReadLine();
+                input = SanitizeInput(input);
 
-                    if (!ValidateInput(input))
-                    {
-                        throw new EmptyInputException();
-                    }
+                if (!ValidateInput(input))
+                {
+                    throw new EmptyInputException();
+                }
 
-                    return input;
-                }
-                catch (EmptyInputException ex)
-                {
-                    Console.Clear();
-                    showMessage(ex.Message);
-                    Thread.Sleep(700);
-                }
-                catch (Exception ex)
-                {
-                    Console.Clear();
-                    showMessage($"An error occurred: {ex.Message}");
-                    Thread.Sleep(700);
-                }
-            } while (true);
+                return input;
+            }
+            catch (EmptyInputException ex)
+            {
+                showMessage(ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                showMessage($"An error occurred: {ex.Message}");
+                return null;
+            }
         }
 
         // method to get a valid name with specific validation 
@@ -242,8 +237,13 @@ namespace Lyserra.Game
             Console.WriteLine(displayVars.Line);
             Console.WriteLine(displayVars.CenterText(displayVars.Message));
             Console.WriteLine(displayVars.Line);
-            Thread.Sleep(delay);
-            Console.Clear();
+            if (delay > 0)
+                Thread.Sleep(delay);
+            else
+            {
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine(); 
+            }
         }
 
         // method to display a menu and get user choice - using struct
@@ -414,27 +414,5 @@ namespace Lyserra.Game
         }
 
 
-
-        //private Master loadExistingMaster()
-        //{
-        //    List<Master> savedMasters = 
-        //}
-
-        //public void masterSelection() 
-        //{
-        //    string[] masterOptions = { "Create New Master", "Load Existing Master" };
-        //    string choice = pickType("Select Opiton: ", masterOptions);
-
-        //    if ( choice == "Create New Master")
-        //    {
-        //        string masterName = getName("Enter Master Name: ");
-        //        master = new Master(masterName);
-        //        showMessage($"Master '{master.MasterName}' created successfully!", 2000);
-        //    } 
-        //    else if ( choice == "Load Existing Master")
-        //    {
-
-        //    }
-        //}
     }
 }

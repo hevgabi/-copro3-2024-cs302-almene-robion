@@ -16,7 +16,8 @@ namespace Lyserra.Game
     public class InvalidNameException : GameException
     {
         public InvalidNameException()
-            : base("Invalid name format. Name must be 2-20 characters and contain only letters and spaces.") { }
+            : base("Invalid name format. Name must be 2-20 " +
+                  "\ncharacters and contain only letters and spaces.") { }
 
         public InvalidNameException(string message) : base(message) { }
     }
