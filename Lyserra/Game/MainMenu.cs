@@ -14,16 +14,19 @@ namespace Lyserra.Game
         Master master;
         Dog dog;
         Cat cat;
+        bool gameMenuActive = true;
+
         private void assignPetToGlobal(Pet pet)
         {
             if (pet.Type == "Dog")
-                this.dog = (Dog)pet;
+                dog = (Dog)pet;
             else if (pet.Type == "Cat")
-                this.cat = (Cat)pet;
+                cat = (Cat)pet;
         }
 
         public void displayMainMenu()
         {
+            gameMenuActive = true;
             // Start game animation
             for (byte i = 0; i < 3; i++)
             {
@@ -34,13 +37,10 @@ namespace Lyserra.Game
                 Thread.Sleep(500);
             }
 
-            while (master == null)
-            {
-                masterMenu();
-            }
+               masterMenu();
 
-            string[] mainMenuOptions = { "Create New Pet", "Delete Pet", "Load Pet", "View Pet Status", "Campaign", "Credits", "Exit" };
-            bool gameMenuActive = true;
+            string[] mainMenuOptions = { "Create New Pet", "Delete Pet", "Load Pet", "Change Master","Campaign", "Credits", "Exit" };
+            
 
             while (gameMenuActive)
             {
@@ -64,11 +64,9 @@ namespace Lyserra.Game
                         else if (cat != null)
                             consoleHelper.showMessage($"Loaded {cat.Name} the Cat!");     
                         break;
-
-                    case '3': // View Pet Status
-                        consoleHelper.showMessage("View Pet Status feature is not yet implemented.");
+                    case '3':
+                        masterMenu();
                         break;
-
                     case '4': // Campaign
                         consoleHelper.showCampaign();
                         break;
@@ -76,13 +74,11 @@ namespace Lyserra.Game
                     case '5': // Credits
                         showCredits();
                         break;
-
                     case '6': // Exit
                         gameMenuActive = false;
-                        masterMenu();
-
                         break;
                 }
+              
             }
         }
 
@@ -91,7 +87,7 @@ namespace Lyserra.Game
             bool masterMenuActive = true;
             while (masterMenuActive)
             {
-                string[] options = { "Create Master", "Choose Master", "Delete Master", "Back" };
+                string[] options = { "Create Master", "Choose Master", "Delete Master", "Exit" };
                 string choice = consoleHelper.pickType("Master Menu", options);
 
                 switch (choice)
@@ -108,9 +104,10 @@ namespace Lyserra.Game
 
                     case "Delete Master":
                         deleteMasterFlow();
+                        masterMenuActive = false;
                         break;
 
-                    case "Back":
+                    case "Exit":
                         masterMenuActive = false;
                         break;
                 }

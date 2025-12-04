@@ -10,9 +10,10 @@ namespace Lyserra.Game.Program
     {
         public static void Main(string[] args)
         {
-            GameLoop gameLoop = new GameLoop();
+            MainMenu mainMenu = new MainMenu();
 
-            gameLoop.startGame();
+            mainMenu.displayMainMenu();
+
         }
     }
 }
