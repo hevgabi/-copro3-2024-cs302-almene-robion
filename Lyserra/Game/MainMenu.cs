@@ -10,7 +10,7 @@ namespace Lyserra.Game
     {
         public ConsoleHelper consoleHelper = new ConsoleHelper();
         private Attributes attributes = new Attributes();
-        LyserraDB database = new LyserraDB();
+        LyserraDB database = new LyserraDB("C:\\Users\\almen\\OneDrive\\Desktop\\Database\\Lyserra.DB");
         Master master;
         Dog dog;
         Cat cat;
