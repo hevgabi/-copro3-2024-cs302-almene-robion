@@ -233,6 +233,7 @@ namespace Lyserra.Game
         // method to show a message with optional delay - using struct
         public void showMessage(string message)
         {
+            Console.Clear();
             displayVars.Message = message;
             Console.WriteLine(displayVars.Line);
             Console.WriteLine(displayVars.CenterText(displayVars.Message));

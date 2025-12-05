@@ -27,6 +27,11 @@ namespace Lyserra.PlayerAndAttributes
             return petType == "Dog" ? dogBreed : catBreed;
         }
 
+        public List<string> specialEye = new List<string>()
+        {
+            "Yes", "No"
+        };
+
         public List<string> dogBreed = new List<string>()
         {
             "Tiger Commando", "Aspin", "Corgi", "Chihuahua", "Afghan Hound"

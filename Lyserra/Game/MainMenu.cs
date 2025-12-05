@@ -1,5 +1,6 @@
 ﻿using Lyserra.PlayerAndAttributes;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -27,6 +28,7 @@ namespace Lyserra.Game
         public void displayMainMenu()
         {
             animation.logo();
+            Console.Write("Press Enter to continue...");
             Console.ReadLine();
             gameMenuActive = true;
 
@@ -41,6 +43,11 @@ namespace Lyserra.Game
 
             masterMenu();
 
+            if (master == null)
+            {
+                return; // lalabas ng displayMainMenu, walang error
+            }
+
             string[] mainMenuOptions = { "Create New Pet", "Delete Pet", "Load Pet", "Change Master", "Campaign", "Credits", "Exit" };
 
             while (gameMenuActive)
@@ -54,13 +61,17 @@ namespace Lyserra.Game
                 switch (choice)
                 {
                     case "Create New Pet":
+                        animation.loadLogo();
                         StartPetCustomizationFlow(master);
+                        animation.loadLogo();
                         break;
                     case "Delete Pet":
                         deletePetFlow();
                         break;
                     case "Load Pet":
+                        animation.loadLogo();
                         choosePetFlow(master.MasterID);
+                        
                         break;
                     case "Change Master":
                         masterMenu();
@@ -73,6 +84,7 @@ namespace Lyserra.Game
                         break;
                     case "Exit":
                         gameMenuActive = false;
+                        animation.exitingLogo();
                         break;
                 }
             }
@@ -102,7 +114,9 @@ namespace Lyserra.Game
                         break;
                     case "Exit":
                         masterMenuActive = false;
-                        break;
+                        animation.exitingLogo();
+                        return;
+                        
                 }
             }
         }
@@ -215,10 +229,11 @@ namespace Lyserra.Game
             pet.HairCut = consoleHelper.pickType("Select Pet Cut", attributes.hairCut.ToArray());
             pet.ColorDesign = consoleHelper.pickType("Select Pet Color Type", attributes.colorEType.ToArray());
             pet.EyeColor = consoleHelper.pickType("Select Eye Color", attributes.colorEye.ToArray());
+            pet.SpecialEye = consoleHelper.pickType("Does your pet have Speciel Eye?", attributes.specialEye.ToArray());
             pet.Accessory = consoleHelper.pickType("Select Accessory", attributes.accessory.ToArray());
             pet.Personality = consoleHelper.pickType("Select Personality", attributes.personality.ToArray());
             pet.Scent = consoleHelper.pickType("Select Scent", attributes.scent.ToArray());
-            pet.Mutation = consoleHelper.pickType("Select Mutation", attributes.mutation.ToArray());
+            pet.Mutation = consoleHelper.pickType("Mutation gives your pet a boost\nSelect Mutation", attributes.mutation.ToArray());
             pet.Element = consoleHelper.pickType("Select Element", attributes.elements.ToArray());
             pet.Crystal = consoleHelper.pickType("Select Crystal", attributes.crystal.ToArray());
             pet.Evolution = consoleHelper.pickType("Select Evolution", attributes.evolution.ToArray());
@@ -287,9 +302,11 @@ namespace Lyserra.Game
                           $"Weight: {chosenPet.Weight}\n" +
                           $"Hair: {chosenPet.HairColor} {chosenPet.HairCut}\n" +
                           $"Eye Color: {chosenPet.EyeColor}\n" +
+                          $"Special Eye: {chosenPet.SpecialEye}\n" +
                           $"Accessory: {chosenPet.Accessory}\n" +
                           $"Personality: {chosenPet.Personality}\n" +
                           $"Scent: {chosenPet.Scent}\n" +
+                          $"Mutatation: [{chosenPet.Mutation}]\n"+
                           $"Mutation: {chosenPet.Mutation}\n" +
                           $"Element: {chosenPet.Element}\n" +
                           $"Crystal: {chosenPet.Crystal}\n" +

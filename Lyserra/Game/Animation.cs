@@ -85,10 +85,10 @@ namespace Lyserra.Game
 (_)             ░  ░░ ░           ░     ░  ░   ░        ░           ░  ░            (_)
 (_)                 ░ ░                                                             (_)
 (_)▄▄▄█████▓ ██░ ██ ▓█████     ▒█████   ██▀███   ██▓  ▄████   ██▓ ███▄    █  ██████ (_)
-(_)▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▒██▒  ██▒▓██ ▒ ██▒▓██▒ ██▒ ▀█▒▓██▒  ██ ▀█   █ ▒██    ▒ (_)
+(_)▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▒██▒  ██▒▓██ ▒ ██▒▓██▒ ██▒ ▀█▒▓██▒  ██ ▀█   █ ▒██    ▒(_)
 (_)▒ ▓██░ ▒░▒██▀▀██░▒███      ▒██░  ██▒▓██ ░▄█ ▒▒██▒▒██░▄▄▄░▒██▒░▓██  ▀█ ██▒ ▓██▄   (_)
-(_)░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄    ▒██   ██░▒██▀▀█▄  ░██░░▓█  ██▓▓██░  ██▒   ▐██▒░ ▒   ██▒(_)
-(_)  ▒██▒ ░ ░▓█▒░██▓░▒████▒   ░ ████▓▒░░██▓ ▒██▒░██░░▒▓███▀▒▒██░░ ██░   ▓██░▒██████▒▒(_)
+(_)░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄    ▒██   ██░▒██▀▀█▄  ░██░░▓█  ██▓▓██░  ██▒   ▐██▒░ ▒   ██(_)
+(_)  ▒██▒ ░ ░▓█▒░██▓░▒████▒   ░ ████▓▒░░██▓ ▒██▒░██░░▒▓███▀▒▒██░░ ██░   ▓██░▒██████▒(_)
 (_)  ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░░▓   ░▒   ▒ ░ ▒░   ▒ ▒ ░▓  ▒ ▒▓▒ ▒ ░(_)
 (_)    ░     ▒ ░▒░ ░ ░ ░  ░     ░ ▒ ▒░   ░▒ ░ ▒░ ▒ ░  ░   ░ ░ ░░   ░ ▒░ ▒ ░░ ░▒  ░ ░(_)
 (_)  ░       ░  ░░ ░   ░      ░ ░ ░ ▒    ░░   ░  ▒ ░░ ░   ░    ░   ░ ░  ▒ ░░  ░  ░  (_)
@@ -116,6 +116,125 @@ namespace Lyserra.Game
 (_)      ░                 ░  ░   ░               ░           ░       ░          ░       ░  ░       ░      ░  ░(_)
 (_) _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _ (_)
 (_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)");
+        }
+
+        public void exitingLogo()
+        {
+            Console.Clear();
+            Console.WriteLine(@" _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _ 
+(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)
+(_)                                                      (_)
+(_) ▓█████ ▒██   ██▒ ██▓▄▄▄█████▓ ██▓ ███▄    █   ▄████  (_)
+(_) ▓█   ▀ ▒▒ █ █ ▒░▓██▒▓  ██▒ ▓▒▓██▒ ██ ▀█   █  ██▒ ▀█▒ (_)
+(_) ▒███   ░░  █   ░▒██▒▒ ▓██░ ▒░▒██▒▓██  ▀█ ██▒▒██░▄▄▄░ (_)
+(_) ▒▓█  ▄  ░ █ █ ▒ ░██░░ ▓██▓ ░ ░██░▓██▒  ▐▌██▒░▓█  ██▓ (_)
+(_) ░▒████▒▒██▒ ▒██▒░██░  ▒██▒ ░ ░██░▒██░   ▓██░░▒▓███▀▒ (_)
+(_) ░░ ▒░ ░▒▒ ░ ░▓ ░░▓    ▒ ░░   ░▓  ░ ▒░   ▒ ▒  ░▒   ▒  (_)
+(_)  ░ ░  ░░░   ░▒ ░ ▒ ░    ░     ▒ ░░ ░░   ░ ▒░  ░   ░  (_)
+(_)    ░    ░    ░   ▒ ░  ░       ▒ ░   ░   ░ ░ ░ ░   ░  (_)
+(_)    ░  ░ ░    ░   ░            ░           ░       ░  (_)
+(_) _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _  _ (_)
+(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)");
+            Thread.Sleep(1500);
+
+            Console.Clear();
+            Console.WriteLine(@" _  _  _  _  _  _  _  _  _  _ 
+(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)
+(_)                        (_)
+(_)  ▄▄▄▄ ▓██   ██▓▓█████  (_)
+(_) ▓█████▄▒██  ██▒▓█   ▀  (_)
+(_) ▒██▒ ▄██▒██ ██░▒███    (_)
+(_) ▒██░█▀  ░ ▐██▓░▒▓█  ▄  (_)
+(_) ░▓█  ▀█▓░ ██▒▓░░▒████▒ (_)
+(_) ░▒▓███▀▒ ██▒▒▒ ░░ ▒░ ░ (_)
+(_) ▒░▒   ░▓██ ░▒░  ░ ░  ░ (_)
+(_)  ░    ░▒ ▒ ░░     ░    (_)
+(_)  ░     ░ ░        ░  ░ (_)
+(_)       ░░ ░             (_)
+(_) _  _  _  _  _  _  _  _ (_)
+(_)(_)(_)(_)(_)(_)(_)(_)(_)(_)");
+        }
+
+        
+
+        public void loadLogo()
+        {
+            int width = 40;
+            int height = 15;
+
+            string[] runePieces = new string[]
+            {
+            " /\\ ",
+            "/  \\",
+            "/ /\\ \\",
+            "\\ \\/ /",
+            "\\  /",
+            " \\/ "
+            };
+
+            int[] targetX = new int[runePieces.Length];
+            int[] targetY = new int[runePieces.Length];
+
+            int[] currentX = new int[runePieces.Length];
+            int[] currentY = new int[runePieces.Length];
+
+            Random rand = new Random();
+
+            // target positions (centered)
+            for (int i = 0; i < runePieces.Length; i++)
+            {
+                targetX[i] = (width - runePieces[i].Length) / 2;
+                targetY[i] = 2 + i;
+            }
+
+            // initialize at random positions
+            for (int i = 0; i < runePieces.Length; i++)
+            {
+                currentX[i] = rand.Next(width - runePieces[i].Length);
+                currentY[i] = rand.Next(height);
+            }
+
+            bool assembled = false;
+            while (!assembled)
+            {
+                Console.Clear();
+
+                // draw border
+                for (int y = 0; y <= height + 1; y++)
+                {
+                    for (int x = 0; x <= width + 1; x++)
+                    {
+                        if (y == 0 || y == height + 1 || x == 0 || x == width + 1)
+                            Console.Write("#");
+                        else
+                            Console.Write(" ");
+                    }
+                    Console.WriteLine();
+                }
+
+                // move pieces
+                for (int i = 0; i < runePieces.Length; i++)
+                {
+                    if (currentX[i] < targetX[i]) currentX[i]++;
+                    else if (currentX[i] > targetX[i]) currentX[i]--;
+
+                    if (currentY[i] < targetY[i]) currentY[i]++;
+                    else if (currentY[i] > targetY[i]) currentY[i]--;
+
+                    Console.SetCursorPosition(currentX[i] + 1, currentY[i]);
+                    Console.Write(runePieces[i]);
+                }
+
+                Thread.Sleep(150);
+
+                // check if assembled
+                assembled = true;
+                for (int i = 0; i < runePieces.Length; i++)
+                    if (currentX[i] != targetX[i] || currentY[i] != targetY[i]) assembled = false;
+            }
+
+            // pause 2 seconds when assembled
+            Thread.Sleep(2000);
         }
 
     }

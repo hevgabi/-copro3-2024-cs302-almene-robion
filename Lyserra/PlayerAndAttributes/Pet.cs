@@ -15,6 +15,7 @@ namespace Lyserra.PlayerAndAttributes
         private string colorDesign;
         private string hairCut;
         private string eyeColor;
+        private string specialEye;
         private string accessory;
         private string personality;
         private string scent;
@@ -50,6 +51,7 @@ namespace Lyserra.PlayerAndAttributes
         public string Accessory { get { return accessory; } set { accessory = value; } }
         public string Personality { get { return personality; } set { personality = value; } }
         public string Scent { get { return scent; } set { scent = value; } }
+        public string SpecialEye { get { return specialEye; } set { specialEye = value; } }
         public string Mutation { get { return mutation; } set { mutation = value; } }
         public string Element { get { return element; } set { element = value; } }
         public string Crystal { get { return crystal; } set { crystal = value; } }

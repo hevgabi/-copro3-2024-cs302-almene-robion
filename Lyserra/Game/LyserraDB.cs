@@ -131,10 +131,10 @@ namespace Lyserra.Game
         public long insertPet(Pet pet)
         {
             string sql = @"INSERT INTO Pet 
-            (masterID, type, petName, weight, age, breed, hairColor, colorDesign, hairCut, eyeColor, accessory,
+            (masterID, type, petName, weight, age, breed, hairColor, colorDesign, hairCut, eyeColor, specialEye, accessory,
              personality, scent, mutation, element, crystal, evolution, strength, mana, defense, speed)
             VALUES
-            (@masterID, @type, @petName, @weight, @age, @breed, @hairColor, @colorDesign, @hairCut, @eyeColor,
+            (@masterID, @type, @petName, @weight, @age, @breed, @hairColor, @colorDesign, @hairCut, @eyeColor, @specialEye,
              @accessory, @personality, @scent, @mutation, @element, @crystal, @evolution, @strength, @mana, @defense, @speed);";
 
             using var cmd = new SQLiteCommand(sql, _connection);
@@ -149,6 +149,7 @@ namespace Lyserra.Game
             cmd.Parameters.AddWithValue("@colorDesign", pet.ColorDesign ?? "");
             cmd.Parameters.AddWithValue("@hairCut", pet.HairCut ?? "");
             cmd.Parameters.AddWithValue("@eyeColor", pet.EyeColor ?? "");
+            cmd.Parameters.AddWithValue(@"specialEye", pet.SpecialEye ?? "");
             cmd.Parameters.AddWithValue("@accessory", pet.Accessory ?? "");
             cmd.Parameters.AddWithValue("@personality", pet.Personality ?? "");
             cmd.Parameters.AddWithValue("@scent", pet.Scent ?? "");
@@ -203,7 +204,7 @@ namespace Lyserra.Game
         {
             string sql = @"UPDATE Pet SET 
                 masterID=@masterID, type=@type, petName=@petName, weight=@weight, age=@age, breed=@breed, 
-                hairColor=@hairColor, colorDesign=@colorDesign, hairCut=@hairCut, eyeColor=@eyeColor, 
+                hairColor=@hairColor, colorDesign=@colorDesign, hairCut=@hairCut, eyeColor=@eyeColor, specialEye=@specialEye,  
                 accessory=@accessory, personality=@personality, scent=@scent, mutation=@mutation, element=@element,
                 crystal=@crystal, evolution=@evolution, strength=@strength, mana=@mana, defense=@defense, speed=@speed
                 WHERE petID=@petID;";
@@ -220,6 +221,7 @@ namespace Lyserra.Game
             cmd.Parameters.AddWithValue("@colorDesign", pet.ColorDesign);
             cmd.Parameters.AddWithValue("@hairCut", pet.HairCut);
             cmd.Parameters.AddWithValue("@eyeColor", pet.EyeColor);
+            cmd.Parameters.AddWithValue("@speicalEye", pet.SpecialEye);
             cmd.Parameters.AddWithValue("@accessory", pet.Accessory);
             cmd.Parameters.AddWithValue("@personality", pet.Personality);
             cmd.Parameters.AddWithValue("@scent", pet.Scent);
@@ -279,6 +281,7 @@ namespace Lyserra.Game
             pet.ColorDesign = reader["colorDesign"]?.ToString();
             pet.HairCut = reader["hairCut"]?.ToString();
             pet.EyeColor = reader["eyeColor"]?.ToString();
+            pet.SpecialEye = reader["specialEye"]?.ToString();
             pet.Accessory = reader["accessory"]?.ToString();
             pet.Personality = reader["personality"]?.ToString();
             pet.Scent = reader["scent"]?.ToString();
@@ -359,6 +362,7 @@ namespace Lyserra.Game
                 colorDesign TEXT,
                 hairCut TEXT,
                 eyeColor TEXT,
+                specialEye TEXT,
                 accessory TEXT,
                 personality TEXT,
                 scent TEXT,
